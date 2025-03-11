@@ -1,0 +1,7 @@
+#!/bin/bash --login
+source ~/.bashrc
+{{env_init_commands}}
+nvidia-smi
+nvidia-smi topo -m
+python3 {{runner}} {{run}} {{configfile}} {{logfile}}
+{{env_end_commands}}
