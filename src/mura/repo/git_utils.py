@@ -9,7 +9,7 @@ logger = logging.getLogger('GIT')
 
 class git_utils:
     
-    def __init__(self, kwargs):
+    def __init__(self, **kwargs):
         self.__name__ = 'git_utils'
 
         self.git_enabled = not os.environ.get('IS_CONTAINER', False)
@@ -17,14 +17,14 @@ class git_utils:
 
         self.local_dev = f'auto-dev-{self.whoami}'
         self.local_run = f'auto-run-{self.whoami}'
-        self.version_file = kwargs.get('version_file','src/auto/version.yml')
+        self.version_file = kwargs.get('version_file','auto/version.yml')
         # get auto folder from version file
         self.auto_folder = os.path.dirname(self.version_file)
         os.makedirs(self.auto_folder, exist_ok=True)
         
         self.repo_path = kwargs.get('repo_path','.')
 
-        self.skip_checks = kwargs.get('skip_checks', ['src/auto/system_parameters.py'])
+        self.skip_checks = kwargs.get('skip_checks', ['param.py'])
         self.skip_checks.extend([self.version_file])
         self._checks = kwargs.get('checks', ['src/ml/models/', 'src/ml/models/layers/', 'src/ml/models/connections/', 'src/ml/models/blocks/', 'src/ml/models/act/', 'src/ml/param/', 'src/ml/runners/', 'src/ml/iox/'])
 
@@ -88,7 +88,8 @@ class git_utils:
             version_data = {
                 'version': [0,0,0],
                 'commit': '0'*40,
-                'action': 0
+                'action': 0,
+                'total_actions': 0
             }
             self.save_version(f, version_data)
         version_data = yaml.load(open(f).read(), Loader=yaml.FullLoader)
@@ -121,6 +122,7 @@ class git_utils:
         # update task number
         else:
             version_data['action'] += 1
+        version_data['total_actions'] += 1
         self.save_version(self.version_file, version_data)
             
         try:        

@@ -8,6 +8,13 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "numpy",
+    "lightning",
+    "torch",
+    "einops",
+    "tqdm",
+    "matplotlib",
+    "ffmpeg",
     "wandb",
     "gitpython",
 ]

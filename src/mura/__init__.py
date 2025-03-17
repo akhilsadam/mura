@@ -1,9 +1,8 @@
-
+import os
 # from schema import Schema, And, Use, Optional, Or
 
 from mura.deploy.util import crupdate, cprint
 from mura.deploy.deploy_action import deploy, deploy_action
-from mura.repo.util import localpath
 from mura.repo.git_utils import git_utils as gl
 
 # param_schema = Schema({
@@ -16,12 +15,13 @@ from mura.repo.git_utils import git_utils as gl
 # })
                     
 class run:
-    env_init_template = localpath('templates/sg_env_init.jinja')
-    env_end_template = localpath('templates/sg_env_end.jinja')
-    submit_template = localpath('templates/sg_engine.jinja')    ## jobname, logfile, run_commands
-    run_template = localpath('templates/sg_run.jinja')          ## env_init_commands, env_end_commands, {{runner}} {{run}} {{configfile}} {{logfile}}
+    env_init_template = 'sg_env_init.jinja'
+    env_end_template = 'sg_env_end.jinja'
+    submit_template = 'sg_engine.jinja'    ## jobname, logfile, run_commands
+    run_template = 'run.jinja'          ## env_init_commands, env_end_commands, {{runner}} {{run}} {{configfile}} {{logfile}}
+    param_file = 'param.py'
     
-    install_info = 'install/'
+    install_info = 'install'
 
 class action:
         action_name = 'action'
@@ -52,7 +52,7 @@ class Instancer():
         self.__name__ = 'Instancer'
         self.defaults = DefaultScheduler(config)
         gdict = gconfig.__dict__ if gconfig is not None else {}
-        self.gl = gl(gdict)
+        self.gl = gl(**gdict, repo_path=os.getcwd())
         
         if run_validator is not None:
             self.validate(run_validator)
@@ -74,12 +74,16 @@ class Instancer():
         
             
 class SingleInstancer(Instancer):
-    def __init__(self, run_validator, config, param=None, gconfig=None, _task_name='', _action_name=''):
+    def __init__(self, run_validator, config, param=None, gconfig=None, _task_name='', _action_name='', **action_kwargs):
         class task:
             task_name = _task_name
             runs = [param,]
         class action:
             action_name = _action_name
             tasks = [task,]
+    
+        for key, value in action_kwargs.items():
+            setattr(action, key, value)    
+        
         config.actions = [action,]        
         super().__init__(run_validator=run_validator, config=config, gconfig=gconfig)

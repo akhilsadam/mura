@@ -8,12 +8,12 @@ then {
     if [ -d ".sw" ]
     then echo 'software environment already exists; activating'
     elif [ -d "/projects/ml_scope/Students/a1744874/scale_invariants/sw" ]
-    then echo 'using a1744874 conda'
-        && CONDAPATH=/projects/ml_scope/Students/a1744874/scale_invariants/sw
-        && VENVPATH=/projects/ml_scope/Students/a1744874/scale_invariants/.venv
+    then echo 'using a1744874 conda' && CONDAPATH=/projects/ml_scope/Students/a1744874/scale_invariants/sw && VENVPATH=/projects/ml_scope/Students/a1744874/scale_invariants/.venv
     else conda create --prefix .sw python=3.10.15 git tmux graphviz conda-forge::ffmpeg
     fi
-    conda activate $CONDAPATH && python3 --version
+    echo $CONDAPATH
+    conda activate $CONDAPATH 
+    python3 --version
 }
 else echo 'not on cluster; fallback to pip / local python'
 fi

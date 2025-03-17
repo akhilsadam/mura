@@ -146,3 +146,25 @@ def serialize_class(cls, file_name):
     # Write to the given .py file
     with open(file_name, 'w') as file:
         file.write(class_code)
+        
+        
+import socket
+
+def check_wifi(host="www.google.com", port=80, timeout=3):
+    """
+    Checks if a Wi-Fi connection is available by attempting to connect to a host.
+    
+    Args:
+        host (str, optional): The hostname to connect to. Defaults to "www.google.com".
+        port (int, optional): The port number to connect to. Defaults to 80.
+        timeout (int, optional): Timeout in seconds for the connection attempt. Defaults to 3.
+    
+    Returns:
+        bool: True if a connection is established, False otherwise.
+    """
+    try:
+        socket.setdefaulttimeout(timeout)
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+        return True
+    except socket.error:
+        return False
