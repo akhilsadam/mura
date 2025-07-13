@@ -6,8 +6,10 @@ from lightning.pytorch.callbacks import ModelCheckpoint
 from .callbacks import GitTrackerCallback
 from .version import VersionManager
 from .train_support import *
+from .schema import validate
 
 def lightning_run(config: DictConfig):
+    validate(config)  # Validate config schema    
     
     if config.pytest:
         config.logging.project = f"pytest-{config.logging.project}"

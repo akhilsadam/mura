@@ -1,6 +1,6 @@
 [metadata]
 name = mura
-version = 0.2.0
+version = 0.2.1
 author = Akhil Sadam
 author_email = sadam.akhil@gmail.com
 description = WandB, Git, and run-table integration for ML++ / eliminating workflow unevenness
@@ -29,6 +29,7 @@ install_requires =
     gitpython
     logging
     pyyaml
+    pydantic
 
 [options.packages.find]
 where = src
