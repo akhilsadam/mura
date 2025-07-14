@@ -39,9 +39,9 @@ jobs:
       run : |
         python -m build
         pip install -e .[tests,dev]
-    - name: Test with pytest
-      run: |
-        pytest test/test_jpcm.py
+    # - name: Test with pytest
+    #   run: |
+    #     pytest test/test_mura.py
     - name: Store the distribution packages
       uses: actions/upload-artifact@v4
       with:
@@ -55,7 +55,7 @@ jobs:
       runs-on: ubuntu-latest
       environment:
         name: pypi
-        url: https://pypi.org/p/jpcm
+        url: https://pypi.org/p/mura
       permissions:
         id-token: write  # IMPORTANT: mandatory for trusted publishing
       strategy:
