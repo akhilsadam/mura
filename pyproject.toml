@@ -1,38 +1,28 @@
-[metadata]
-name = mura
-version = 0.2.1
-author = Akhil Sadam
-author_email = sadam.akhil@gmail.com
-description = WandB, Git, and run-table integration for ML++ / eliminating workflow unevenness
-long_description = file: README.md
-long_description_content_type = text/markdown
-url = 
-project_urls = 
-classifiers = 
-    Programming Language :: Python :: 3
-    License :: OSI Approved :: MIT License
-    Operating System :: OS Independent
+[project]
+name = "mura"
+version = "0.2.1"
+description = "WandB, Git, and run-table integration for ML++ / eliminating workflow unevenness"
+authors = [
+    {name = "Akhil Sadam", email = "sadam.akhil@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
 
-[options]
-package_dir = 
-    = src
-packages = find:
-python_requires = >=3.10
-install_requires = 
-    numpy
-    lightning
-    torch
-    einops
-    tqdm
-    matplotlib
-    wandb
-    gitpython
-    logging
-    pyyaml
-    pydantic
+dependencies = [
+    "wandb>=0.15.0",
+    "gitpython>=3.1.31",
+    "numpy>=1.23.5",
+    "lightning>=2.0.0",
+    "torch>=2.0.0",
+    "einops>=0.6.0",
+    "tqdm>=4.65.0",
+    "matplotlib>=3.7.1",
+    "pyyaml>=6.0",
+    "pydantic>=1.10.9"
+]
 
 [options.packages.find]
-where = src
+where = "src"
 
 [build-system]
 requires = [
