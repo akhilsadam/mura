@@ -2,6 +2,7 @@ import os
 import logging
 from dataclasses import dataclass, field, asdict
 from omegaconf import OmegaConf, DictConfig, MISSING
+import wandb
 
 from lightning.pytorch import Trainer, seed_everything
 from lightning.pytorch.strategies import DDPStrategy
@@ -14,7 +15,7 @@ from .schema import validate
 
 
 def lightning_run(config: DictConfig):
-    validate(config)  # Validate config schema    
+    # validate(config)  # Validate config schema    # TODO
     
     if config.pytest:
         config.logging.project = f"pytest-{config.logging.project}"

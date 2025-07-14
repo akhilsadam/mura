@@ -1,2 +1,2 @@
 install:
-	uv run --no-project -- python -c "import mura"
+	uv pip install -e .
