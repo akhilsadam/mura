@@ -1,5 +1,12 @@
 from pydantic import BaseModel
-from dataclasses import asdict
+from dataclasses import asdict, dataclass, field
+from omegaconf import MISSING
+
+
+def design(cls):
+    """Decorator to convert a class to a dataclass with JSON serialization."""
+    return dataclass(cls)
+
 
 class ModelSchema(BaseModel):
     name: str
@@ -39,6 +46,10 @@ class RootSchema(BaseModel):
     data: DataSchema
     trainer: TrainerSchema
     logging: LoggingSchema
+    
+class DataSchema(BaseModel):
+    logging: LoggingSchema
+    # and additional model schema as needed
 
 
 

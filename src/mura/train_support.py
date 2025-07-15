@@ -1,19 +1,15 @@
-from dataclasses import asdict, make_dataclass
 import logging, os
 
 import iox
 from models import models
+
+from .schema import asdict
 
 
 logger = logging.getLogger(__name__)
 # ----------------------------
 # Supporting Functions
 # ----------------------------
-
-# def to_dataclass(my_dict):
-#     return make_dataclass(
-#         "Parameter", ((k, type(v)) for k, v in my_dict.items())
-#     )(**my_dict)
 
 def instantiate_model(config):
     """Dynamically create model based on config"""
@@ -28,9 +24,10 @@ def get_data_loaders(config):
     # Implementation from previous version
     # start by checking if config.data.dataset is a folder path
     if isinstance(config.data.dataset, str) and os.path.isdir(config.data.dataset):
-        dataloaders, shapes, _ = iox.load_data(config.data.dataset, asdict(config.data))
+        raise ValueError(f"Dataset path {config.data.dataset} is a directory, not a dataset name.")
+        # dataloaders, shapes, _ = iox.load_data(config.data.dataset, asdict(config.data))
     else:
-        dataloaders, shapes, _ = iox.datasets[config.data.dataset](asdict(config.data), config.logging.run_path)
+        dataloaders, shapes, _ = iox.datasets[config.data.dataset](config.model, asdict(config.data), config.logging.run_path)
     logger.info(f"Dataloaders created with shapes: {shapes}.")
     
     return dataloaders

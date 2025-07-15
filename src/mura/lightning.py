@@ -1,7 +1,7 @@
 import os
 import logging
 from dataclasses import dataclass, field, asdict
-from omegaconf import OmegaConf, DictConfig, MISSING
+import toml
 import wandb
 
 from lightning.pytorch import Trainer, seed_everything
@@ -10,15 +10,17 @@ from lightning.pytorch.loggers import WandbLogger
 from lightning.pytorch.callbacks import ModelCheckpoint
 from .callbacks import GitTrackerCallback
 from .version import VersionManager
-from .train_support import *
 from .schema import validate
 
 
-def lightning_run(config: DictConfig):
+def lightning_run(config):
     # validate(config)  # Validate config schema    # TODO
     
+    from .train_support import instantiate_model, get_data_loaders, save_results
+    ## imports supporting functions from calling module / package
+    
     if config.pytest:
-        config.logging.project = f"pytest-{config.logging.project}"
+        # config.logging.project = f"pytest-{config.logging.project}"
         config.logging.task_name = f"pytest-{config.logging.task_name}"
         config.logging.run_name = f"pytest-{config.logging.run_name}"
     
@@ -32,15 +34,23 @@ def lightning_run(config: DictConfig):
     seed_everything(config.seed)
     
     # Save config to run directory
-    config_path = os.path.join(run_path,"config.yaml")
-    OmegaConf.save(config, config_path)        # TODO fix
+    config_dict = asdict(config)
+    config_path = os.path.join(run_path,"config.toml")
+    with open(config_path, 'w') as f:
+        toml.dump(config_dict, f)
+        
+    logger = logging.getLogger(__name__)
+
+    file_handler = logging.FileHandler(os.path.join(run_path, "run.log"))
+    file_handler.setLevel(logging.INFO)
+    logger.addHandler(file_handler)
         
     # WandB setup
     wandb_logger = WandbLogger(
         project=config.logging.project,
         name=config.logging.run_name,
         notes=config.logging.notes,
-        config=asdict(config),
+        config=config_dict,
         save_dir=str(run_path)
     )
     logger.info(f"WandB initialized with project: {config.logging.project}, run name: {config.logging.run_name}")    
@@ -58,6 +68,7 @@ def lightning_run(config: DictConfig):
     # Model initialization
     model = instantiate_model(config)
     logger.info(f"Model instantiated: {model.__class__.__name__}")
+    wandb_logger.watch(model, log="all")
     
     # Data loaders
     train_loader, val_loader, test_loader = get_data_loaders(config)
@@ -81,6 +92,7 @@ def lightning_run(config: DictConfig):
     trainer.fit(model, train_loader, val_loader)
     logger.info("Training completed.")
     model.eval()  # Set model to evaluation mode for testing
+    wandb_logger.experiment.unwatch(model)
     
     if config.pytest:
        model.asserts()
@@ -101,7 +113,7 @@ def lightning_run(config: DictConfig):
                 metadata={
                     "task": config.logging.task_name,
                     "run_path": str(run_path),
-                    "config": OmegaConf.to_container(config, resolve=True)
+                    "config": config_dict,
                 }
             )
             artifact.add_file(os.path.join(run_path,"checkpoints"))
