@@ -34,5 +34,5 @@ def get_data_loaders(config):
 
 def save_results(config, results):
     """Save results to run directory"""
-    logger.info(f"Saving output to {config.logging.run_path}")
+    logger.info(f"[SKIP] Saving output to {config.logging.run_path}")
     pass

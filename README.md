@@ -1,5 +1,9 @@
 ## Changelog:
 
+### 0.2.9 (2025-07-15)
+- Minor changes to lightning run script that matches the delay-neural-operator code
+
+
 ### 0.2.8 (2025-07-14)
 - Major (breaking) change: Removed OmegaConf dependency except for `MISSING` value
 - Added toml save support for configuration files
