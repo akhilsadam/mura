@@ -15,8 +15,8 @@ def instantiate_model(config):
     """Dynamically create model based on config"""
     # Implementation from previous version
     model_module = models.get(config.model.name)
-    param = config.model
-    model = model_module.Network(param)
+    # param = config.model
+    model = model_module.Network(config)
     return model
 
 def get_data_loaders(config):

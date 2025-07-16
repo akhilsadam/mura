@@ -1,5 +1,8 @@
 ## Changelog:
 
+### 0.2.10 (2025-07-16)
+- Added full config info to model initialization (lightning run script)
+
 ### 0.2.9 (2025-07-15)
 - Minor changes to lightning run script that matches the delay-neural-operator code
 
