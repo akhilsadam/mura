@@ -16,6 +16,7 @@ from .schema import validate
 
 def lightning_run(config):
     # validate(config)  # Validate config schema    # TODO
+    config.adjust()
     
     from .train_support import instantiate_model, get_data_loaders, save_results
     ## imports supporting functions from calling module / package
