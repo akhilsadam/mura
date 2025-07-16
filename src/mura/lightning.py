@@ -132,7 +132,7 @@ def lightning_run(config):
         # save_results(config, results)
         # logger.info("Results saved.")
         
-        ar_pred = model.ar_predict(test_loader.dataset.data, config)
+        ar_pred = model.ar_predict(test_loader.dataset.data)
         logger.info(f"Autoregressive testing completed.")
         torch.save(ar_pred, os.path.join(run_path, 'ar_pred.pt')) # btychw
         draw.mp4(os.path.join(run_path, 'autoregressive.mp4'), ar_pred[0].detach().cpu().numpy(), triplet=True) # TYCHW

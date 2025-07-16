@@ -1,6 +1,6 @@
 ## Changelog:
 
-### 0.2.11 (2025-07-16)
+### 0.2.12 (2025-07-16)
 - Added full config info to model initialization (lightning run script)
 - Added model adjust option (lightning run script)
 
