@@ -1,8 +1,9 @@
 ## Changelog:
 
-### 0.2.14 (2025-07-16)
+### 0.2.15 (2025-07-16)
 - Changed GPUs to only include "free" GPUs; temporarily available due to cluster.
 - Added missing pynvml dependency
+- Added memory limit for GPU selection
 
 ### 0.2.12 (2025-07-16)
 - Added full config info to model initialization (lightning run script)

@@ -97,7 +97,7 @@ def lightning_run(config):
     
     ### TODO remove after cluster is improved
     ### workaround for cluster issues with exclusive GPU access
-    free_gpus = [device_id for device_id in range(torch.cuda.device_count()) if torch.cuda.utilization(device_id) == 0]
+    free_gpus = [device_id for device_id in range(torch.cuda.device_count()) if torch.cuda.utilization(device_id) == 0 and torch.cuda.memory_allocated(device_id) <= 8e6] # 8MB threshold for free GPU
     _devices = free_gpus[:config.trainer.devices] if config.trainer.devices > 0 else free_gpus
     
     # Trainer setup
