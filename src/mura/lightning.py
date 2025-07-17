@@ -95,13 +95,18 @@ def lightning_run(config):
     train_loader, val_loader, test_loader = get_data_loaders(config)
     logger.info(f"Dataloaders created.")
     
+    ### TODO remove after cluster is improved
+    ### workaround for cluster issues with exclusive GPU access
+    free_gpus = [device_id for device_id in range(torch.cuda.device_count()) if torch.cuda.utilization(device_id) == 0]
+    _devices = free_gpus[:config.trainer.devices] if config.trainer.devices > 0 else free_gpus
+    
     # Trainer setup
     trainer = Trainer(
         logger=wandb_logger,
         callbacks=[checkpoint_cb, git_cb],
         max_steps=config.trainer.max_steps,
         accelerator=config.trainer.accelerator,
-        devices=config.trainer.devices,
+        devices=_devices,
         precision=config.trainer.precision,
         # strategy=config.trainer.strategy,
         # deterministic=True,
