@@ -1,5 +1,8 @@
 ## Changelog:
 
+### 0.2.16 (2025-07-17)
+- Add load from file for models
+
 ### 0.2.15 (2025-07-16)
 - Changed GPUs to only include "free" GPUs; temporarily available due to cluster.
 - Added missing pynvml dependency

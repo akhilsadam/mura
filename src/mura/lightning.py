@@ -100,6 +100,11 @@ def lightning_run(config):
     free_gpus = [device_id for device_id in range(torch.cuda.device_count()) if torch.cuda.utilization(device_id) == 0 and torch.cuda.memory_allocated(device_id) <= 8e6] # 8MB threshold for free GPU
     _devices = free_gpus[:config.trainer.devices] if config.trainer.devices > 0 else free_gpus
     
+    trainer_kwargs = {}
+
+    if hasattr(config.model, 'load_from'):
+        trainer_kwargs['ckpt_path'] = config.model.load_from
+    
     # Trainer setup
     trainer = Trainer(
         logger=wandb_logger,
@@ -113,6 +118,7 @@ def lightning_run(config):
         log_every_n_steps=config.trainer.log_freq,
         val_check_interval=config.trainer.val_freq,
         limit_val_batches=config.data.val_batch_size,
+        **trainer_kwargs,
     )
     logger.info(f"Trainer initialized with max steps: {config.trainer.max_steps}, devices: {config.trainer.devices}, strategy: {config.trainer.strategy}")
     
@@ -120,6 +126,8 @@ def lightning_run(config):
     # if not config.test_mode:
     trainer.fit(model, train_loader, val_loader)
     logger.info("Training completed.")
+    
+    
     model.eval()  # Set model to evaluation mode for testing
     wandb_logger.experiment.unwatch(model)
     
