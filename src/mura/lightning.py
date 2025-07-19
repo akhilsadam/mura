@@ -118,13 +118,12 @@ def lightning_run(config):
         log_every_n_steps=config.trainer.log_freq,
         val_check_interval=config.trainer.val_freq,
         limit_val_batches=config.data.val_batch_size,
-        **trainer_kwargs,
     )
     logger.info(f"Trainer initialized with max steps: {config.trainer.max_steps}, devices: {config.trainer.devices}, strategy: {config.trainer.strategy}")
     
     # Training
     # if not config.test_mode:
-    trainer.fit(model, train_loader, val_loader)
+    trainer.fit(model, train_loader, val_loader, **trainer_kwargs)
     logger.info("Training completed.")
     
     
