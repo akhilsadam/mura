@@ -14,7 +14,7 @@ from .version import VersionManager
 from .schema import validate
 
 
-def lightning_run(config):
+def lightning_run(config, copy=False):
     # validate(config)  # Validate config schema    # TODO
     config.adjust()
     
@@ -28,7 +28,7 @@ def lightning_run(config):
     
     
     # Initialize version manager, create run directory, and set up logging
-    version_manager = VersionManager(config.logging.base_path)
+    version_manager = VersionManager(config.logging.base_path, copy)
     version_data = version_manager.load_version()
     config.logging.run_path, config.logging.run_id, config.logging.version = version_manager.new_path(config.logging.task_name, config.logging.run_name)
     run_path = config.logging.run_path

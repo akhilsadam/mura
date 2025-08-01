@@ -1,6 +1,9 @@
 ## Changelog:
 - See next-to-top version for stable release (latest is always WIP/unstable)
 
+### 0.2.18 (2025-08-01)
+- Add copy function for models
+
 ### 0.2.17 (2025-07-17)
 - Add load from file for models
 

@@ -11,13 +11,14 @@ from .version import VersionManager
 
 
 class data_run():
-    def __init__(self, config):
+    def __init__(self, config, copy=False):
     # validate(config)  # Validate config schema    # TODO
         self.config = config
+        self.copy = copy
 
     def __enter__(self):
         # Initialize version manager, create run directory, and set up logging
-        self.version_manager = VersionManager(self.config.logging.base_path)
+        self.version_manager = VersionManager(self.config.logging.base_path, self.copy)
         self.version_data = self.version_manager.load_version()
         self.config.logging.run_path, self.config.logging.run_id, self.config.logging.version = \
             self.version_manager.new_path(self.config.logging.task_name, self.config.logging.run_name)

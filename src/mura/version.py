@@ -4,7 +4,8 @@ import datetime
 # Version Management Utilities
 # ----------------------------
 class VersionManager:
-    def __init__(self, base_path: str = "./run"):
+    def __init__(self, base_path: str = "./run", copy_code: bool = False):
+        
         self.base_path = base_path
         os.makedirs(self.base_path, exist_ok=True)
         self.version_file = os.path.join(self.base_path, "version.yaml")
@@ -38,6 +39,12 @@ class VersionManager:
         
         run_path = os.path.join(self.base_path, f'{version[0]:05d}_{task_name}', f'{version[1]:05d}_{run_name}')
         os.makedirs(run_path, exist_ok=True)
+        
+        if self.copy_code:
+            # copy complete directory structure to hidden folder in run directory with rsync (exclude large files and .git directory)
+            code_path = os.path.join(run_path, ".code")
+            os.mkdir(code_path, exist_ok=True)
+            os.system(f'rsync -artvz --exclude="*.pyc" --exclude="*.npy" --exclude="*.nc" --exclude=".git" * {code_path} &') # run in background
         
         # Save updated version
         self.save_version(version_data)
