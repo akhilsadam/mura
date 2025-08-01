@@ -9,6 +9,7 @@ class VersionManager:
         self.base_path = base_path
         os.makedirs(self.base_path, exist_ok=True)
         self.version_file = os.path.join(self.base_path, "version.yaml")
+        self.copy_code = copy_code
         
     def load_version(self):
         if not os.path.exists(self.version_file):
