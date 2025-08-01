@@ -44,7 +44,7 @@ class VersionManager:
         if self.copy_code:
             # copy complete directory structure to hidden folder in run directory with rsync (exclude large files and .git directory)
             code_path = os.path.join(run_path, ".code")
-            os.mkdir(code_path, exist_ok=True)
+            os.makedirs(code_path, exist_ok=True)
             os.system(f'rsync -artvz --exclude="*.pyc" --exclude="*.npy" --exclude="*.nc" --exclude=".git" * {code_path} &') # run in background
         
         # Save updated version
