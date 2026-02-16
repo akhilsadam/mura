@@ -1,7 +1,7 @@
 [project]
 name = "mura"
-version = "0.2.20"
-description = "WandB, Git, and run-table integration for ML++ / eliminating workflow unevenness"
+version = "0.3.0"
+description = "WandB, Git, and run-table integration for ML++ / eliminating workflow unevenness - Now with Hydra support!"
 authors = [
     {name = "Akhil Sadam", email = "sadam.akhil@gmail.com"}
 ]

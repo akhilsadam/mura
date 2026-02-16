@@ -1,6 +1,10 @@
 ## Changelog:
 - See next-to-top version for stable release (latest is always WIP/unstable)
 
+### 0.3.0 (2026-02-16)
+- GPT-assisted rewrite with Hydra; to remove non-Hydra later.
+- Now primarily supports Slurm / standard clusters and ML training.
+
 ### 0.2.20 (2025-08-01)
 - Add copy function for models
 
